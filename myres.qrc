@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/new/Images">
+        <file>Images/logo_Otic.png</file>
+        <file>Images/png/actions/filenew.png</file>
+        <file>Images/png/actions/edit_add.png</file>
+        <file>Images/png/actions/run.png</file>
+        <file>Images/png/actions/button_cancel.png</file>
+        <file>Images/png/actions/exit.png</file>
+        <file>Images/png/apps/download_manager.png</file>
+        <file>Images/png/minetypes/info.png</file>
+        <file>Images/png/actions/editcopy.png</file>
+        <file>Images/xy.png</file>
+        <file>Images/rphi.png</file>
+    </qresource>
+</RCC>
