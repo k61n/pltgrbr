@@ -101,12 +101,34 @@ void MainWindow::updateList(QList<QGraphicsItem *> list)
     ui->tableWidget->clear();
     ui->tableWidget->setRowCount(list.size()-1);
 
-    for (int i = 7; i < list.size(); i++)
+    qreal xCoef = 0, yCoef = 0, xOffset, yOffset;
+    QTableWidgetItem *x, *y;
+
+    if ((!ui->lineEdit->text().isNull()) && (!ui->lineEdit_2->text().isNull()))
     {
-        QTableWidgetItem *x = new QTableWidgetItem(QString::number(list.at(i)->pos().x()));
-        ui->tableWidget->setItem(i-1, 0, x);
-        QTableWidgetItem *y = new QTableWidgetItem(QString::number(list.at(i)->pos().y()));
-        ui->tableWidget->setItem(i-1, 1, y);
+        xCoef = (ui->lineEdit_2->text().toDouble() - ui->lineEdit->text().toDouble()) / (list.at(3)->pos().x() - list.at(2)->pos().x());
+        xOffset = list.at(2)->pos().x() - ui->lineEdit->text().toDouble() / xCoef;
+    }
+
+    if ((!ui->lineEdit_3->text().isNull()) && (!ui->lineEdit_4->text().isNull()))
+    {
+        yCoef = (ui->lineEdit_4->text().toDouble() - ui->lineEdit_3->text().toDouble()) / (list.at(5)->pos().y() - list.at(4)->pos().y());
+        yOffset = list.at(4)->pos().y() - ui->lineEdit_3->text().toDouble() / yCoef;
+    }
+
+    for (int i = 8; i < list.size(); i++)
+    {
+        if (xCoef == 0)
+            x = new QTableWidgetItem(QString::number(list.at(i)->pos().x()));
+        else
+            x = new QTableWidgetItem(QString::number((list.at(i)->pos().x() - xOffset) * xCoef));
+        ui->tableWidget->setItem(i - 8, 0, x);
+
+        if (yCoef == 0)
+            y = new QTableWidgetItem(QString::number(list.at(i)->pos().y()));
+        else
+            y = new QTableWidgetItem(QString::number((list.at(i)->pos().y() - yOffset) * yCoef));
+        ui->tableWidget->setItem(i - 8, 1, y);
     }
 }
 
