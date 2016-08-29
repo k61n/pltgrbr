@@ -1,7 +1,7 @@
 PlotGrabber
 ===========
 
-PG is an opes source software that allows to extract data from plots, e.g. those that are used in scientific papers, both cartesian and polar.
+PG is an open source software that allows to extract data from plots, e.g. those that are used in scientific papers, both cartesian and polar.
 
 The software is being written in C++ using Qt 5.7.
 
