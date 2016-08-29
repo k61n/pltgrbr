@@ -202,6 +202,7 @@ void MainWindow::updateList(QList<QGraphicsItem *> list) //updates the table wit
         }
     }
 
+    ui->tableWidget->sortByColumn(0, Qt::AscendingOrder);
 }
 
 void MainWindow::dropFromMyScene(QString dropFilename)
