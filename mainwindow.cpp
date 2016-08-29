@@ -202,7 +202,10 @@ void MainWindow::updateList(QList<QGraphicsItem *> list) //updates the table wit
         }
     }
 
-    ui->tableWidget->sortByColumn(0, Qt::AscendingOrder);
+    if ((setXY) || ((!setXY) && (!setPolar)))
+        ui->tableWidget->sortByColumn(0, Qt::AscendingOrder);
+    if (setPolar)
+        ui->tableWidget->sortByColumn(1, Qt::AscendingOrder);
 }
 
 void MainWindow::dropFromMyScene(QString dropFilename)
