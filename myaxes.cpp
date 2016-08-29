@@ -50,10 +50,9 @@ MyAxes::MyAxes(QRectF rec)
 
     xAxis = new QGraphicsLineItem(this);
     xAxis->setOpacity(0.5);
-//    xAxis->setFlags(ItemIgnoresTransformations);
+
     yAxis = new QGraphicsLineItem(this);
     yAxis->setOpacity(0.5);
-//    yAxis->setFlags(ItemIgnoresTransformations);
 
     drawAxes();
 
@@ -269,4 +268,176 @@ void MyAxes::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     Q_UNUSED(widget);
     Q_UNUSED(option);
     Q_UNUSED(painter);
+}
+
+MyPolar::MyPolar(QRectF rec)
+{
+    setFlag(ItemHasNoContents);
+
+    this->rect = rec;
+
+    x1 = new Point(this);
+    x1->setPos(0.5 * rect.width(), 0.5 * rect.height());
+
+    x2 = new Point(this);
+    x2->setPos(0.8 * rect.width(), 0.5 * rect.height());
+
+
+    xAxis = new QGraphicsLineItem(this);
+    xAxis->setOpacity(0.5);
+
+    circle = new QGraphicsEllipseItem(this);
+    circle->setOpacity(0.5);
+
+    drawAxes();
+
+    connect(x1, SIGNAL(posChanged()), this, SLOT(on_pos_change()));
+    connect(x2, SIGNAL(posChanged()), this, SLOT(on_pos_change()));
+}
+
+void MyPolar::drawAxes()
+{
+    QPen pen;
+    pen.setColor(Qt::cyan);
+    pen.setWidth(5);
+
+    QPointF px1, px2;
+    Intrsct test;
+    int i = 0;
+
+    xAxis->setPen(pen);
+    circle->setPen(pen);
+
+    if (x1->pos().x() != x2->pos().x())
+    {
+        test = intersection(QLineF(x1->pos(), x2->pos()), QLineF(0, 0, rect.width(), 0));
+        if (test.areIntersected)
+            if ((test.inPoint.x() >= 0) && (test.inPoint.x() <= rect.width()))
+            {
+                px1 = test.inPoint;
+                i++;
+            }
+
+        test = intersection(QLineF(x1->pos(), x2->pos()), QLineF(0, 0, 0, rect.height()));
+        if (test.areIntersected)
+            if ((test.inPoint.y() >= 0) && (test.inPoint.y() <= rect.height()))
+            {
+                if (i == 0)
+                {
+                    px1 = test.inPoint;
+                    i++;
+                }
+                else
+                {
+                    px2 = test.inPoint;
+                }
+            }
+
+        test = intersection(QLineF(x1->pos(), x2->pos()), QLineF(0, rect.height(), rect.width(), rect.height()));
+        if (test.areIntersected)
+            if ((test.inPoint.x() >= 0) && (test.inPoint.x() <= rect.width()))
+            {
+                if (i == 0)
+                {
+                    px1 = test.inPoint;
+                    i++;
+                }
+                else
+                {
+                    px2 = test.inPoint;
+                }
+            }
+
+        test = intersection(QLineF(x1->pos(), x2->pos()), QLineF(rect.width(), 0, rect.width(), rect.height()));
+        if (test.areIntersected)
+            if ((test.inPoint.y() >= 0) && (test.inPoint.y() <= rect.height()))
+            {
+                if (i == 0)
+                {
+                    px1 = test.inPoint;
+                    i++;
+                }
+                else
+                {
+                    px2 = test.inPoint;
+                }
+            }
+
+        xAxis->setLine(px1.x(), px1.y(), px2.x(), px2.y());
+    }
+    else
+    {
+        xAxis->setLine(x1->pos().x(), 0, x1->pos().x(), rect.height());
+    }
+
+    qreal radius = sqrt(pow(x2->pos().x() - x1->pos().x(), 2) + pow(x2->pos().y() - x1->pos().y(), 2));
+    circle->setRect(QRectF(x1->pos() - QPointF(radius, radius), x1->pos() + QPointF(radius, radius)));
+}
+
+MyPolar::Intrsct MyPolar::intersection(QLineF a, QLineF b)
+{
+    qreal ma, mb, ca, cb;
+    Intrsct result;
+
+    if (!((a.x1() == a.x2()) && (b.x1() == b.x2())))
+    {
+        if ((a.x1() == a.x2()) && (b.x1() != b.x2()))
+        {
+            mb = (b.y2() - b.y1()) / (b.x2() - b.x1());
+            cb = b.y2() - mb * b.x2();
+            result.inPoint = QPointF(a.x1(), mb * a.x1() + cb);
+            result.areIntersected = true;
+        }
+        else
+        {
+            if ((a.x1() != a.x2()) && (b.x1() == b.x2()))
+            {
+                ma = (a.y2() - a.y1()) / (a.x2() - a.x1());
+                ca = a.y1() - ma * a.x1();
+                result.inPoint = QPointF(b.x2(), ma * b.x2() + ca);
+                result.areIntersected = true;
+            }
+            else
+            {
+                ma = (a.y2() - a.y1()) / (a.x2() - a.x1());
+                ca = a.y1() - ma * a.x1();
+                mb = (b.y2() - b.y1()) / (b.x2() - b.x1());
+                cb = b.y2() - mb * b.x2();
+                if (ma != mb)
+                {
+                    result.inPoint = QPointF((cb - ca) / (ma - mb), mb * (cb - ca) / (ma - mb) + cb);
+                    result.areIntersected = true;
+                }
+                else
+                {
+                    result.inPoint = QPointF(0, 0);
+                    result.areIntersected = false;
+                }
+            }
+        }
+    }
+    else
+    {
+        result.inPoint = QPointF(0, 0);
+        result.areIntersected = false;
+    }
+
+    return result;
+}
+
+QRectF MyPolar::boundingRect() const
+{
+    return QRectF();
+}
+
+void MyPolar::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(widget);
+    Q_UNUSED(option);
+    Q_UNUSED(painter);
+}
+
+void MyPolar::on_pos_change()
+{
+    drawAxes();
 }

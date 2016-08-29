@@ -13,7 +13,6 @@ class MyPoint : public QObject, public QGraphicsItem
 public:
     MyPoint(int num);
     QRectF boundingRect() const;// Q_DECL_OVERRIDE;
-//    QPainterPath shape() const;// Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);// Q_DECL_OVERRIDE;
 
 protected:

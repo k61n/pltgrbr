@@ -14,9 +14,6 @@ class MyScene : public QGraphicsScene
 public:
     MyScene(QObject *parent = 0);    
 
-public slots:
-    void on_set_XY();
-
 signals:
     void signalFromMyScene(QPointF pos);
     void signalPointAdded(QList<QGraphicsItem *> list);
@@ -31,8 +28,6 @@ protected:
     virtual void dragMoveEvent(QGraphicsSceneDragDropEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    void setUpXY();
-
     int num;
     int j = 0;
     QList<QGraphicsItem *> xy; //x1, x2, y1, y2

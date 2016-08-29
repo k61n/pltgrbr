@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     scene = new MyScene();
     ui->graphicsView->setScene(scene);
+    ui->tabWidget->setCurrentIndex(0);
     ui->tableWidget->setColumnCount(2);
     ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "x" << "y");
 
@@ -27,7 +28,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionOpen_file_triggered()
 {
-    filename=QFileDialog::getOpenFileName(this, tr("Open file"), ".", "Image files (*.jpg *.bmp *.png);;All files (*.*)");
+    filename=QFileDialog::getOpenFileName(this, tr("Open file"), ".", "Image files (*.jpg *.bmp *.png *.tif);;All files (*.*)");
     if (filename.isEmpty()) return;
 
     QFile file(filename);
@@ -96,40 +97,111 @@ void MainWindow::scaleMyScene(qreal scaleFactor)
     rect.adjust(a1, b1, -a2, -b2);
 }
 
-void MainWindow::updateList(QList<QGraphicsItem *> list)
-{
+void MainWindow::updateList(QList<QGraphicsItem *> list) //updates the table with measured points in user's coordinates if they are set
+{                                                       // or in pixels if they aren't, in ascending order based on X
     ui->tableWidget->clear();
-    ui->tableWidget->setRowCount(list.size()-1);
+    ui->tableWidget->setRowCount(list.size() - 13);
 
-    qreal xCoef = 0, yCoef = 0, xOffset, yOffset;
+    qreal xCoef = 0, yCoef = 0, rCoef = 0, xOffset, yOffset;
     QTableWidgetItem *x, *y;
 
-    if ((!ui->lineEdit->text().isNull()) && (!ui->lineEdit_2->text().isNull()))
+    if ((setXY) || ((!setXY) && (!setPolar)))   // if XY are set up or if nothing is set up
     {
-        xCoef = (ui->lineEdit_2->text().toDouble() - ui->lineEdit->text().toDouble()) / (list.at(3)->pos().x() - list.at(2)->pos().x());
-        xOffset = list.at(2)->pos().x() - ui->lineEdit->text().toDouble() / xCoef;
+        if ((!ui->lineEdit->text().isNull()) && (!ui->lineEdit_2->text().isNull()))
+        {
+            if (!ui->checkBox_X->isChecked())
+            {
+                xCoef = (ui->lineEdit_2->text().toDouble() - ui->lineEdit->text().toDouble()) / (list.at(3)->pos().x() - list.at(2)->pos().x());
+                xOffset = list.at(2)->pos().x() - ui->lineEdit->text().toDouble() / xCoef;
+            }
+            else
+            {
+                xCoef = (log10(ui->lineEdit_2->text().toDouble()) - log10(ui->lineEdit->text().toDouble())) / (list.at(3)->pos().x() - list.at(2)->pos().x());
+                xOffset = list.at(2)->pos().x() - log10(ui->lineEdit->text().toDouble()) / xCoef;
+            }
+        }
+
+        if ((!ui->lineEdit_3->text().isNull()) && (!ui->lineEdit_4->text().isNull()))
+        {
+            if (!ui->checkBox_Y->isChecked())
+            {
+                yCoef = (ui->lineEdit_4->text().toDouble() - ui->lineEdit_3->text().toDouble()) / (list.at(5)->pos().y() - list.at(4)->pos().y());
+                yOffset = list.at(4)->pos().y() - ui->lineEdit_3->text().toDouble() / yCoef;
+            }
+            else
+            {
+                yCoef = (log10(ui->lineEdit_4->text().toDouble()) - log10(ui->lineEdit_3->text().toDouble())) / (list.at(5)->pos().y() - list.at(4)->pos().y());
+                yOffset = list.at(4)->pos().y() - log10(ui->lineEdit_3->text().toDouble()) / yCoef;
+            }
+        }
     }
 
-    if ((!ui->lineEdit_3->text().isNull()) && (!ui->lineEdit_4->text().isNull()))
+    if (setPolar) //if polar is set upd
     {
-        yCoef = (ui->lineEdit_4->text().toDouble() - ui->lineEdit_3->text().toDouble()) / (list.at(5)->pos().y() - list.at(4)->pos().y());
-        yOffset = list.at(4)->pos().y() - ui->lineEdit_3->text().toDouble() / yCoef;
+        if ((!ui->lineEdit_5->text().isNull()) && (!ui->lineEdit_6->text().isNull()))
+            rCoef = (ui->lineEdit_6->text().toDouble() - ui->lineEdit_5->text().toDouble()) / (sqrt(pow((list.at(10)->pos().x() - list.at(9)->pos().x()), 2) + pow((list.at(10)->pos().y() - list.at(9)->pos().y()), 2)));
     }
 
-    for (int i = 8; i < list.size(); i++)
+    for (int i = 13; i < list.size(); i++)
     {
-        if (xCoef == 0)
-            x = new QTableWidgetItem(QString::number(list.at(i)->pos().x()));
-        else
-            x = new QTableWidgetItem(QString::number((list.at(i)->pos().x() - xOffset) * xCoef));
-        ui->tableWidget->setItem(i - 8, 0, x);
+        if ((setXY) || ((!setXY) && (!setPolar)))
+        {
+            if (xCoef == 0)
+                x = new QTableWidgetItem(QString::number(list.at(i)->pos().x()));
+            else
+            {
+                if (!ui->checkBox_X->isChecked())
+                    x = new QTableWidgetItem(QString::number((list.at(i)->pos().x() - xOffset) * xCoef));
+                else
+                    x = new QTableWidgetItem(QString::number(pow(10, (list.at(i)->pos().x() - xOffset) * xCoef)));
+            }
+            ui->tableWidget->setItem(i - 13, 0, x);
 
-        if (yCoef == 0)
-            y = new QTableWidgetItem(QString::number(list.at(i)->pos().y()));
-        else
-            y = new QTableWidgetItem(QString::number((list.at(i)->pos().y() - yOffset) * yCoef));
-        ui->tableWidget->setItem(i - 8, 1, y);
+            if (yCoef == 0)
+                y = new QTableWidgetItem(QString::number(list.at(i)->pos().y()));
+            else
+            {
+                if (!ui->checkBox_Y->isChecked())
+                    y = new QTableWidgetItem(QString::number((list.at(i)->pos().y() - yOffset) * yCoef));
+                else
+                    y = new QTableWidgetItem(QString::number(pow(10, (list.at(i)->pos().y() - yOffset) * yCoef)));
+            }
+
+            ui->tableWidget->setItem(i - 13, 1, y);
+        }
+
+        qreal quarter = 0;
+
+        if (setPolar)
+        {
+            if (i < 13)
+            {
+                x = new QTableWidgetItem(QString::number(list.at(i)->pos().x()));
+                y = new QTableWidgetItem(QString::number(list.at(i)->pos().y()));
+            }
+            else
+            {
+                if (rCoef == 0)
+                    x = new QTableWidgetItem(QString::number(sqrt(pow(list.at(i)->pos().x() - list.at(9)->pos().x(), 2) + pow(list.at(i)->pos().y() - list.at(9)->pos().y(), 2))));
+                else
+                    x = new QTableWidgetItem(QString::number(rCoef * sqrt(pow(list.at(i)->pos().x() - list.at(9)->pos().x(), 2) + pow(list.at(i)->pos().y() - list.at(9)->pos().y(), 2))));
+
+                if ((list.at(i)->pos().x() >= list.at(9)->pos().x()) && (list.at(i)->pos().y() <= list.at(9)->pos().y())) quarter = 0;
+                if ((list.at(i)->pos().x() < list.at(9)->pos().x()) && (list.at(i)->pos().y() <= list.at(9)->pos().y())) quarter = 3.14159265359;
+                if ((list.at(i)->pos().x() < list.at(9)->pos().x()) && (list.at(i)->pos().y() > list.at(9)->pos().y())) quarter = 3.14159265359;
+                if ((list.at(i)->pos().x() >= list.at(9)->pos().x()) && (list.at(i)->pos().y() > list.at(9)->pos().y())) quarter = 3.14159265359 * 2;
+
+                if (ui->radioButton->isChecked())
+                    y = new QTableWidgetItem(QString::number(quarter + atan((- list.at(i)->pos().y() + list.at(9)->pos().y()) / (list.at(i)->pos().x() - list.at(9)->pos().x()))));
+                else
+                    y = new QTableWidgetItem(QString::number(qRadiansToDegrees(quarter + atan((- list.at(i)->pos().y() + list.at(9)->pos().y()) / (list.at(i)->pos().x() - list.at(9)->pos().x())))));
+            }
+
+            ui->tableWidget->setItem(i - 13, 0, x);
+            ui->tableWidget->setItem(i - 13, 1, y);
+        }
     }
+
 }
 
 void MainWindow::dropFromMyScene(QString dropFilename)
@@ -144,18 +216,7 @@ void MainWindow::dropFromMyScene(QString dropFilename)
 
 void MainWindow::on_actionAnalyze_triggered()
 {
-//    if (filename != NULL)
-//    {
-//        QList<QGraphicsItem *> list = scene->items(Qt::AscendingOrder);
-//        ui->tableWidget->clear();
-//        ui->tableWidget->setRowCount(list.size());
-//        for (int i = 1; i < list.size(); i++)
-//        {
-//            ui->tableWidget->setItem(i, 1, QTableWidgetItem(QString::number(list.at(i)->pos.x())));
-//            ui->tableWidget->setItem(i, 2, QTableWidgetItem(QString::number(list.at(i)->pos.y())));
-////            ui->textEdit->append(QString::number(i) + "\t" + QString::number(list.at(i)->pos().x()) + "\t" + QString::number(list.at(i)->pos().y()));
-//        }
-//    }
+
 }
 
 void MainWindow::on_actionClose_workspace_triggered()
@@ -212,7 +273,6 @@ void MainWindow::initScene()
     connect(ui->graphicsView, SIGNAL(signalFromMyView(qreal)), this, SLOT(scaleMyScene(qreal))); //scales magnifier as it happens with MyScene
     connect(scene, SIGNAL(signalPointAdded(QList<QGraphicsItem*>)), this, SLOT(updateList(QList<QGraphicsItem*>))); //when new MyPoint is added sends event to textEdit
     connect(scene, SIGNAL(signalDropFromMyScene(QString)), this, SLOT(dropFromMyScene(QString))); //allows drag n drop from MyScene
-    connect(this, SIGNAL(signalToSetXY()), scene, SLOT(on_set_XY())); //appear disappear axes
 
     ui->tableWidget->setColumnCount(2);
     ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "x" << "y");
@@ -228,6 +288,10 @@ void MainWindow::addImage(QImage image)
     axes->setEnabled(setXY);
     axes->setVisible(setXY);
 
+    polar = new MyPolar(scene->sceneRect());
+    scene->addItem(polar);
+    polar->setEnabled(setPolar);
+    polar->setVisible(setPolar);
 
     qreal h1 = ui->graphicsView->height();
     qreal h2 = image.height();
@@ -247,14 +311,32 @@ void MainWindow::addImage(QImage image)
 
 void MainWindow::on_actionSet_XY_triggered()
 {
-    // have to make signal to MyScene and have to make axis class
-//    emit signalToSetXY();
-    setXY = !setXY;
-    axes->setEnabled(setXY);
-    axes->setVisible(setXY);
+    if (ui->graphicsView->scene()->items().count() > 0)
+    {
+        setXY = !setXY;
+        if (setXY)
+        {
+            ui->tabWidget->setCurrentIndex(1);
+            if (setPolar) on_actionSet_polar_plot_triggered();
+        }
+        else ui->tabWidget->setCurrentIndex(0);
+        axes->setEnabled(setXY);
+        axes->setVisible(setXY);
+    }
 }
 
 void MainWindow::on_actionSet_polar_plot_triggered()
 {
-    emit signalToSetXY();
+    if (ui->graphicsView->scene()->items().count() > 0)
+    {
+        setPolar = !setPolar;
+        if (setPolar)
+        {
+            ui->tabWidget->setCurrentIndex(2);
+            if (setXY) on_actionSet_XY_triggered();
+        }
+        else ui->tabWidget->setCurrentIndex(0);
+        polar->setEnabled(setPolar);
+        polar->setVisible(setPolar);
+    }
 }

@@ -49,4 +49,33 @@ private:
     QGraphicsObject *x1, *x2, *y1, *y2;
 };
 
+class MyPolar : public QObject, public QGraphicsItem
+{
+        Q_OBJECT
+        Q_INTERFACES(QGraphicsItem)
+public:
+    MyPolar(QRectF rec);
+
+    void drawAxes();
+
+    struct Intrsct{
+        bool areIntersected;
+        QPointF inPoint;
+    };
+
+    Intrsct intersection(QLineF a, QLineF b);
+
+    QRectF boundingRect() const Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) Q_DECL_OVERRIDE;
+
+public slots:
+    void on_pos_change();
+
+private:
+    QRectF rect;
+    QGraphicsObject *x1, *x2;
+    QGraphicsLineItem *xAxis;
+    QGraphicsEllipseItem *circle;
+};
+
 #endif // MYAXES_H

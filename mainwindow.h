@@ -24,9 +24,6 @@ public slots:
     void updateList(QList<QGraphicsItem *> list);
     void dropFromMyScene(QString dropFilename); //drop to MyScene
 
-signals:
-    void signalToSetXY();
-
 private slots:
     void on_actionOpen_file_triggered();
     void on_actionAnalyze_triggered();
@@ -34,9 +31,7 @@ private slots:
     void on_actionSave_data_triggered();
     void on_actionExit_program_triggered();
     void on_actionImage_from_clipboard_triggered();
-
     void on_actionSet_XY_triggered();
-
     void on_actionSet_polar_plot_triggered();
 
 private:
@@ -45,8 +40,8 @@ private:
 
     MyScene *scene;
     QGraphicsItem *item;    
-    QGraphicsItem *axes;
-    bool setXY = false;
+    QGraphicsItem *axes, *polar;
+    bool setXY = false, setPolar = false;
     QString filename;
     Ui::MainWindow *ui;
 

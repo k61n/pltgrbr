@@ -198,7 +198,7 @@
         </widget>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
-          <string>Axes</string>
+          <string>XY</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="1" column="0">
@@ -210,7 +210,7 @@
               </property>
               <layout class="QGridLayout" name="gridLayout_5">
                <item row="1" column="0">
-                <widget class="QCheckBox" name="checkBox">
+                <widget class="QCheckBox" name="checkBox_X">
                  <property name="text">
                   <string>Log</string>
                  </property>
@@ -274,7 +274,7 @@
                 </layout>
                </item>
                <item row="1" column="0">
-                <widget class="QCheckBox" name="checkBox_2">
+                <widget class="QCheckBox" name="checkBox_Y">
                  <property name="text">
                   <string>Log</string>
                  </property>
@@ -314,6 +314,106 @@
          </layout>
         </widget>
         <widget class="QWidget" name="tab_3">
+         <attribute name="title">
+          <string>rθ</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_9">
+          <item row="0" column="0">
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="3" column="0">
+             <spacer name="verticalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="0">
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>r</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_11">
+               <item row="1" column="0">
+                <layout class="QGridLayout" name="gridLayout_10">
+                 <item row="2" column="0">
+                  <widget class="QLineEdit" name="lineEdit_5"/>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QLabel" name="label_6">
+                   <property name="text">
+                    <string>r2</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_5">
+                   <property name="text">
+                    <string>r1</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QLineEdit" name="lineEdit_6"/>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="2" column="0">
+             <widget class="QGroupBox" name="groupBox_4">
+              <property name="title">
+               <string>θ</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <item>
+                <widget class="QRadioButton" name="radioButton">
+                 <property name="text">
+                  <string>Rad</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout">
+                 <item>
+                  <widget class="QRadioButton" name="radioButton_2">
+                   <property name="text">
+                    <string>Deg</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_4">
          <attribute name="title">
           <string>Output</string>
          </attribute>

@@ -12,13 +12,6 @@ QRectF MyPoint::boundingRect() const
     return QRectF(-10, -10, 20, 20);
 }
 
-//QPainterPath MyPoint::shape() const
-//{
-//    QPainterPath path;
-//    path.addRect(-10, -10, 20, 20);
-//    return path;
-//}
-
 void MyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget);
