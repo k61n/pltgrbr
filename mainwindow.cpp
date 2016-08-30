@@ -142,49 +142,54 @@ void MainWindow::updateList(QList<QGraphicsItem *> list) //updates the table wit
             rCoef = (ui->lineEdit_6->text().toDouble() - ui->lineEdit_5->text().toDouble()) / (sqrt(pow((list.at(10)->pos().x() - list.at(9)->pos().x()), 2) + pow((list.at(10)->pos().y() - list.at(9)->pos().y()), 2)));
     }
 
+    x = new QTableWidgetItem;
+    y = new QTableWidgetItem;
+
     for (int i = 13; i < list.size(); i++)
     {
         if ((setXY) || ((!setXY) && (!setPolar)))
         {
             if (xCoef == 0)
-                x = new QTableWidgetItem(QString::number(list.at(i)->pos().x()));
+                x->setData(0, list.at(i)->pos().x());
             else
             {
                 if (!ui->checkBox_X->isChecked())
-                    x = new QTableWidgetItem(QString::number((list.at(i)->pos().x() - xOffset) * xCoef));
+                    x->setData(0, (list.at(i)->pos().x() - xOffset) * xCoef);
                 else
-                    x = new QTableWidgetItem(QString::number(pow(10, (list.at(i)->pos().x() - xOffset) * xCoef)));
+                    x->setData(0, pow(10, (list.at(i)->pos().x() - xOffset) * xCoef));
             }
             ui->tableWidget->setItem(i - 13, 0, x);
 
             if (yCoef == 0)
-                y = new QTableWidgetItem(QString::number(list.at(i)->pos().y()));
+                y->setData(0, list.at(i)->pos().y());
             else
             {
                 if (!ui->checkBox_Y->isChecked())
-                    y = new QTableWidgetItem(QString::number((list.at(i)->pos().y() - yOffset) * yCoef));
+                    y->setData(0, (list.at(i)->pos().y() - yOffset) * yCoef);
                 else
-                    y = new QTableWidgetItem(QString::number(pow(10, (list.at(i)->pos().y() - yOffset) * yCoef)));
+                    y->setData(0, pow(10, (list.at(i)->pos().y() - yOffset) * yCoef));
             }
 
             ui->tableWidget->setItem(i - 13, 1, y);
         }
 
         qreal quarter = 0;
+        x = new QTableWidgetItem;
+        y = new QTableWidgetItem;
 
         if (setPolar)
         {
             if (i < 13)
             {
-                x = new QTableWidgetItem(QString::number(list.at(i)->pos().x()));
-                y = new QTableWidgetItem(QString::number(list.at(i)->pos().y()));
+                x->setData(0, list.at(i)->pos().x());
+                y->setData(0, list.at(i)->pos().y());
             }
             else
             {
                 if (rCoef == 0)
-                    x = new QTableWidgetItem(QString::number(sqrt(pow(list.at(i)->pos().x() - list.at(9)->pos().x(), 2) + pow(list.at(i)->pos().y() - list.at(9)->pos().y(), 2))));
+                    x->setData(0, sqrt(pow(list.at(i)->pos().x() - list.at(9)->pos().x(), 2) + pow(list.at(i)->pos().y() - list.at(9)->pos().y(), 2)));
                 else
-                    x = new QTableWidgetItem(QString::number(rCoef * sqrt(pow(list.at(i)->pos().x() - list.at(9)->pos().x(), 2) + pow(list.at(i)->pos().y() - list.at(9)->pos().y(), 2))));
+                    x->setData(0, rCoef * sqrt(pow(list.at(i)->pos().x() - list.at(9)->pos().x(), 2) + pow(list.at(i)->pos().y() - list.at(9)->pos().y(), 2)));
 
                 if ((list.at(i)->pos().x() >= list.at(9)->pos().x()) && (list.at(i)->pos().y() <= list.at(9)->pos().y())) quarter = 0;
                 if ((list.at(i)->pos().x() < list.at(9)->pos().x()) && (list.at(i)->pos().y() <= list.at(9)->pos().y())) quarter = 3.14159265359;
@@ -192,9 +197,9 @@ void MainWindow::updateList(QList<QGraphicsItem *> list) //updates the table wit
                 if ((list.at(i)->pos().x() >= list.at(9)->pos().x()) && (list.at(i)->pos().y() > list.at(9)->pos().y())) quarter = 3.14159265359 * 2;
 
                 if (ui->radioButton->isChecked())
-                    y = new QTableWidgetItem(QString::number(quarter + atan((- list.at(i)->pos().y() + list.at(9)->pos().y()) / (list.at(i)->pos().x() - list.at(9)->pos().x()))));
+                    y->setData(0, quarter + atan((- list.at(i)->pos().y() + list.at(9)->pos().y()) / (list.at(i)->pos().x() - list.at(9)->pos().x())));
                 else
-                    y = new QTableWidgetItem(QString::number(qRadiansToDegrees(quarter + atan((- list.at(i)->pos().y() + list.at(9)->pos().y()) / (list.at(i)->pos().x() - list.at(9)->pos().x())))));
+                    y->setData(0, qRadiansToDegrees(quarter + atan((- list.at(i)->pos().y() + list.at(9)->pos().y()) / (list.at(i)->pos().x() - list.at(9)->pos().x()))));
             }
 
             ui->tableWidget->setItem(i - 13, 0, x);
