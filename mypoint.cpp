@@ -27,3 +27,23 @@ void MyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->drawLine(-10, 0, 10, 0);
     painter->drawLine(0, -10, 0, 10);
 }
+
+void MyPoint::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_UNUSED(event);
+    setOpacity(0.6);
+    QGraphicsItem::update();
+}
+
+void MyPoint::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_UNUSED(event);
+    setOpacity(1);
+    QGraphicsItem::update();
+}
+
+void MyPoint::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_UNUSED(event);
+    QGraphicsItem::update();
+}

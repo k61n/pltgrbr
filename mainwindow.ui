@@ -498,9 +498,9 @@
    </attribute>
    <addaction name="actionOpen_file"/>
    <addaction name="actionSave_data"/>
-   <addaction name="actionAnalyze"/>
    <addaction name="actionSet_XY"/>
    <addaction name="actionSet_polar_plot"/>
+   <addaction name="actionAnalyze"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen_file">
@@ -601,7 +601,7 @@
   </action>
   <action name="actionUpside_down">
    <property name="text">
-    <string>Upside down</string>
+    <string>180°</string>
    </property>
   </action>
   <action name="actionArbitrary">

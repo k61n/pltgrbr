@@ -12,10 +12,14 @@ class MyPoint : public QObject, public QGraphicsItem
 
 public:
     MyPoint(int num);
+
     QRectF boundingRect() const;// Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);// Q_DECL_OVERRIDE;
 
-protected:
+protected:    
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
 private:
 
