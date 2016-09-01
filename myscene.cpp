@@ -53,22 +53,10 @@ void MyScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
     }
     else
     {
-        QString fn = event->mimeData()->urls().at(0).fileName(QUrl::FullyDecoded);
-        QString ext = "";
-        int i = fn.size()-1;
+        QString fn = event->mimeData()->urls().at(0).toLocalFile();
+        QByteArray format = QImageReader::imageFormat(fn);
 
-        while (i >= 0)
-        {
-            if (fn.at(i) != '.')
-            {
-                ext = fn.at(i) + ext;
-                i--;
-            }
-            else break;
-        }
-
-        if ((ext == "png") || (ext == "jpg") || (ext == "jpeg") || (ext == "bmp")
-                || (ext == "PNG") || (ext == "JPG") || (ext == "JPEG") || (ext == "BMP"))
+        if (!format.isEmpty())
             event->setAccepted(true);
         else event->setAccepted(false);
     }
@@ -82,6 +70,7 @@ void MyScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 void MyScene::keyPressEvent(QKeyEvent *keyEvent)
 {
     if (keyEvent->matches(QKeySequence::Delete))
+        for (int i = selectedItems().count() - 1; i >= 0; i--)
             removeItem(selectedItems().at(i));
     else
         QGraphicsScene::keyReleaseEvent(keyEvent);
