@@ -78,3 +78,11 @@ void MyScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
     event->accept();
 }
+
+void MyScene::keyPressEvent(QKeyEvent *keyEvent)
+{
+    if (keyEvent->matches(QKeySequence::Delete))
+            removeItem(selectedItems().at(i));
+    else
+        QGraphicsScene::keyReleaseEvent(keyEvent);
+}

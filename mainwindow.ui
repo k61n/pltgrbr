@@ -157,10 +157,13 @@
          <bool>true</bool>
         </property>
         <property name="dragMode">
-         <enum>QGraphicsView::NoDrag</enum>
+         <enum>QGraphicsView::RubberBandDrag</enum>
         </property>
         <property name="viewportUpdateMode">
          <enum>QGraphicsView::MinimalViewportUpdate</enum>
+        </property>
+        <property name="rubberBandSelectionMode">
+         <enum>Qt::ContainsItemBoundingRect</enum>
         </property>
        </widget>
       </item>

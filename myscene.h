@@ -26,6 +26,7 @@ protected:
     virtual void dropEvent(QGraphicsSceneDragDropEvent *event) Q_DECL_OVERRIDE;
     virtual void dragEnterEvent(QGraphicsSceneDragDropEvent *event) Q_DECL_OVERRIDE;
     virtual void dragMoveEvent(QGraphicsSceneDragDropEvent *event) Q_DECL_OVERRIDE;
+    virtual void keyPressEvent(QKeyEvent *keyEvent);
 
 private:
     int num;
