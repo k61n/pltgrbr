@@ -2,7 +2,7 @@
 
 Point::Point(QGraphicsItem *parent) : QGraphicsObject(parent)
 {
-    setFlags(ItemIsSelectable | ItemIsMovable | ItemIgnoresTransformations | ItemSendsScenePositionChanges);
+    setFlags(ItemIsMovable | ItemIgnoresTransformations | ItemSendsScenePositionChanges);
 
 }
 

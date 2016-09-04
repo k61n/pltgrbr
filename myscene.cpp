@@ -2,7 +2,7 @@
 
 MyScene::MyScene(QObject *parent) : QGraphicsScene(parent)
 {
-    num = 6;
+    num = 13;
 }
 
 void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -11,13 +11,12 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         QGraphicsScene::mousePressEvent(event);
         if (mouseGrabberItem() == 0)
-            if (event->button() == Qt::LeftButton)
-            {
-                QGraphicsItem *it;
-                it = new MyPoint(num++);
-                it->setPos(event->scenePos());
-                addItem(it);
-            }
+        {
+            setSelectionArea(QPainterPath());
+            smthIsSelected = false;
+        }
+        else
+            smthIsSelected = true;
     }
 }
 
@@ -27,17 +26,31 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) //is connected wit
     {
         QGraphicsScene::mouseMoveEvent(event);
         emit signalFromMyScene(event->scenePos());
+        emit signalPointAdded(items(Qt::AscendingOrder));
     }
     else return;
 }
 
 void MyScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton)
+    if (sceneRect().contains(event->scenePos()))
     {
-        emit signalPointAdded(items(Qt::AscendingOrder));
+        QGraphicsScene::mouseReleaseEvent(event);
+        if (!smthIsSelected)
+        {
+            if ((event->button() == Qt::LeftButton) && (selectionArea().boundingRect().isNull()))
+            {
+                QGraphicsItem *it;
+                it = new MyPoint(num++);
+                it->setPos(event->scenePos());
+                addItem(it);
+                emit signalPointAdded(items(Qt::AscendingOrder));
+                setSelectionArea(QPainterPath());
+            }
+        }
+        else
+            emit signalPointAdded(items(Qt::AscendingOrder));
     }
-    QGraphicsScene::mouseReleaseEvent(event);
 }
 
 void MyScene::dropEvent(QGraphicsSceneDragDropEvent *event)

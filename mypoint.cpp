@@ -5,9 +5,6 @@ MyPoint::MyPoint(int num)
     setFlags(ItemIsSelectable | ItemIsMovable | ItemIgnoresTransformations);
     setAcceptHoverEvents(true);
     setZValue(num);
-    if (isSelected())
-        setOpacity(0.5);
-    else setOpacity(1);
 }
 
 QRectF MyPoint::boundingRect() const

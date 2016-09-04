@@ -32,6 +32,7 @@ private:
     int num;
     int j = 0;
     QList<QGraphicsItem *> xy; //x1, x2, y1, y2
+    bool smthIsSelected = false;
 };
 
 #endif // MYSCENE_H
