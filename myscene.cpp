@@ -86,5 +86,5 @@ void MyScene::keyPressEvent(QKeyEvent *keyEvent)
         for (int i = selectedItems().count() - 1; i >= 0; i--)
             removeItem(selectedItems().at(i));
     else
-        QGraphicsScene::keyReleaseEvent(keyEvent);
+        QGraphicsScene::keyPressEvent(keyEvent);
 }

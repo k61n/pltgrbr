@@ -1,4 +1,5 @@
 #include "mypoint.h"
+#include <QStyleOptionGraphicsItem>
 
 MyPoint::MyPoint(int num)
 {
@@ -20,7 +21,14 @@ void MyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QPen pen;
     pen.setColor(Qt::magenta);
     pen.setWidth(2);
+
+    if (isSelected())
+        pen.setStyle(Qt::DotLine);
+    else
+        pen.setStyle(Qt::SolidLine);
+
     painter->setPen(pen);
+
     painter->drawRect(QRectF(QPointF(-6, -6), QPointF(6, 6)));
     pen.setWidth(1);
     painter->setPen(pen);
@@ -31,7 +39,7 @@ void MyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 void MyPoint::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
-    setOpacity(0.6);
+    setOpacity(0.5);
     QGraphicsItem::update();
 }
 
