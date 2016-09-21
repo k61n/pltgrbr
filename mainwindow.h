@@ -18,6 +18,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+signals:
+    void signalToSelectLine(QImage img);
+
 public slots:
     void zoomMyScene(QPointF pos);
     void scaleMyScene(qreal scaleFactor);
@@ -33,13 +36,15 @@ private slots:
     void on_actionImage_from_clipboard_triggered();
     void on_actionSet_XY_triggered();
     void on_actionSet_polar_plot_triggered();
+    void on_actionSelect_curve_triggered();
 
 private:
     void initScene();
-    void addImage(QImage image);
+    void addImage(QImage img);
 
     MyScene *scene;
-    QGraphicsItem *item;    
+    QGraphicsItem *item;
+    QImage image;
     QGraphicsItem *axes, *polar;
     bool setXY = false, setPolar = false;
     QString filename;

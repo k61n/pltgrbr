@@ -37,7 +37,7 @@ void MainWindow::on_actionOpen_file_triggered()
 
     initScene();
 
-    QImage image(filename);
+    image = QImage(filename);
     file.close();
 
     addImage(image);
@@ -136,7 +136,7 @@ void MainWindow::updateList(QList<QGraphicsItem *> list) //updates the table wit
         }
     }
 
-    if (setPolar) //if polar is set upd
+    if (setPolar) //if polar is set up
     {
         if ((!ui->lineEdit_5->text().isNull()) && (!ui->lineEdit_6->text().isNull()))
             rCoef = (ui->lineEdit_6->text().toDouble() - ui->lineEdit_5->text().toDouble()) / (sqrt(pow((list.at(10)->pos().x() - list.at(9)->pos().x()), 2) + pow((list.at(10)->pos().y() - list.at(9)->pos().y()), 2)));
@@ -217,7 +217,7 @@ void MainWindow::dropFromMyScene(QString dropFilename)
 {
     initScene();
 
-    QImage image(dropFilename);
+    image = QImage(dropFilename);
     filename = dropFilename;
 
     addImage(image);
@@ -259,11 +259,11 @@ void MainWindow::on_actionExit_program_triggered()
 
 void MainWindow::on_actionImage_from_clipboard_triggered()
 {
-    QImage img = qApp->clipboard()->image();
-    if (!img.isNull())
+    image = qApp->clipboard()->image();
+    if (!image.isNull())
     {
         initScene();
-        addImage(img);
+        addImage(image);
     }
 }
 
@@ -282,14 +282,15 @@ void MainWindow::initScene()
     connect(ui->graphicsView, SIGNAL(signalFromMyView(qreal)), this, SLOT(scaleMyScene(qreal))); //scales magnifier as it happens with MyScene
     connect(scene, SIGNAL(signalPointAdded(QList<QGraphicsItem*>)), this, SLOT(updateList(QList<QGraphicsItem*>))); //when new MyPoint is added sends event to textEdit
     connect(scene, SIGNAL(signalDropFromMyScene(QString)), this, SLOT(dropFromMyScene(QString))); //allows drag n drop from MyScene
+    connect(this, SIGNAL(signalToSelectLine(QImage)), scene, SLOT(on_select_line(QImage)));
 
     ui->tableWidget->setColumnCount(2);
     ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "x" << "y");
 }
 
-void MainWindow::addImage(QImage image)
+void MainWindow::addImage(QImage img)
 {
-    item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+    item = new QGraphicsPixmapItem(QPixmap::fromImage(img));
     scene->addItem(item);
 
     axes = new MyAxes(scene->sceneRect());
@@ -348,4 +349,10 @@ void MainWindow::on_actionSet_polar_plot_triggered()
         polar->setEnabled(setPolar);
         polar->setVisible(setPolar);
     }
+}
+
+void MainWindow::on_actionSelect_curve_triggered()
+{
+    //here i have to emit signal in order to receive then a feedback from my scene
+    emit signalToSelectLine(image);
 }

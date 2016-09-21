@@ -11,5 +11,7 @@
         <file>Images/png/actions/editcopy.png</file>
         <file>Images/xy.png</file>
         <file>Images/rphi.png</file>
+        <file>Images/points.png</file>
+        <file>Images/freeline.png</file>
     </qresource>
 </RCC>

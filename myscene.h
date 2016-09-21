@@ -19,6 +19,9 @@ signals:
     void signalPointAdded(QList<QGraphicsItem *> list);
     void signalDropFromMyScene(QString dropFilename);
 
+public slots:
+    void on_select_line(QImage img);
+
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -29,10 +32,12 @@ protected:
     virtual void keyPressEvent(QKeyEvent *keyEvent);
 
 private:
+    QColor backgroundColorIs(QImage& img);
+
     int num;
-    int j = 0;
-    QList<QGraphicsItem *> xy; //x1, x2, y1, y2
-    bool smthIsSelected = false;
+    QList<QGraphicsItem *> xy;
+    bool smthIsSelected = false, selectLine = false;
+    QImage image;
 };
 
 #endif // MYSCENE_H

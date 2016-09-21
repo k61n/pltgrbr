@@ -147,7 +147,7 @@
          <enum>QGraphicsView::NoAnchor</enum>
         </property>
         <property name="viewportUpdateMode">
-         <enum>QGraphicsView::BoundingRectViewportUpdate</enum>
+         <enum>QGraphicsView::SmartViewportUpdate</enum>
         </property>
        </widget>
       </item>
@@ -160,7 +160,7 @@
          <enum>QGraphicsView::RubberBandDrag</enum>
         </property>
         <property name="viewportUpdateMode">
-         <enum>QGraphicsView::MinimalViewportUpdate</enum>
+         <enum>QGraphicsView::SmartViewportUpdate</enum>
         </property>
         <property name="rubberBandSelectionMode">
          <enum>Qt::ContainsItemBoundingRect</enum>
@@ -483,6 +483,8 @@
     <addaction name="actionSet_XY"/>
     <addaction name="actionSet_polar_plot"/>
     <addaction name="actionAnalyze"/>
+    <addaction name="actionSet_points_manually"/>
+    <addaction name="actionSelect_curve"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImage"/>
@@ -503,6 +505,8 @@
    <addaction name="actionSave_data"/>
    <addaction name="actionSet_XY"/>
    <addaction name="actionSet_polar_plot"/>
+   <addaction name="actionSet_points_manually"/>
+   <addaction name="actionSelect_curve"/>
    <addaction name="actionAnalyze"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -610,6 +614,24 @@
   <action name="actionArbitrary">
    <property name="text">
     <string>Arbitrary</string>
+   </property>
+  </action>
+  <action name="actionSet_points_manually">
+   <property name="icon">
+    <iconset resource="myres.qrc">
+     <normaloff>:/new/Images/Images/points.png</normaloff>:/new/Images/Images/points.png</iconset>
+   </property>
+   <property name="text">
+    <string>Set points manually</string>
+   </property>
+  </action>
+  <action name="actionSelect_curve">
+   <property name="icon">
+    <iconset resource="myres.qrc">
+     <normaloff>:/new/Images/Images/freeline.png</normaloff>:/new/Images/Images/freeline.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select curve</string>
    </property>
   </action>
  </widget>
