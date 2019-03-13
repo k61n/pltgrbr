@@ -1,6 +1,6 @@
 # PlotGrabber
 
-PG is an open source software that allows to extract data from plots, e.g. those that are used in scientific articles, both cartesian and polar.
+Pltgrbr is an open source software that allows to extract data from plots, e.g. those that are used in scientific articles, both cartesian and polar.
 
 The software is written in C++ using Qt 5.12.1.
 
