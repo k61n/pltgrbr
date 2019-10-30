@@ -31,3 +31,5 @@ FORMS    += mainwindow.ui
 
 RESOURCES += \
     myres.qrc
+
+RC_ICONS = logo_Otic.ico
